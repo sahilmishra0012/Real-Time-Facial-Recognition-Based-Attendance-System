@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "176486834039",
+    "firebase_url": "https://attendance-system-93432.firebaseio.com",
+    "project_id": "attendance-system-93432",
+    "storage_bucket": "attendance-system-93432.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176486834039:android:11c6859eac383aeb6d0b72",
+        "android_client_info": {
+          "package_name": "com.example.facial_recognition_attendance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176486834039-0iuipaem75olje9r3hnqoonvoirjj324.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.facial_recognition_attendance",
+            "certificate_hash": "ae6eeeb3fc0ac2daec7ac9c6d4351ce2b0354d3b"
+          }
+        },
+        {
+          "client_id": "176486834039-dl66fmpivs98cn60a4e7qo8vcn6tu3av.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOE3dcDsdn9YMJH7VFtNja8iMa5whkIn0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176486834039-dl66fmpivs98cn60a4e7qo8vcn6tu3av.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
