@@ -80,6 +80,7 @@ flutter:
     - assets/timeout.png
     - assets/exclaim.png
     - assets/tick.png
+    - assets/double-tick.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

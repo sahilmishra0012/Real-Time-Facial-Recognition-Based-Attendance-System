@@ -17,10 +17,14 @@ import 'package:path_provider/path_provider.dart';
 
 class CameraScreen extends StatefulWidget {
   final CameraDescription cameraDescription;
+  final String rollNumber;
+  final String subjectCode;
 
   const CameraScreen({
     Key key,
     @required this.cameraDescription,
+    @required this.rollNumber,
+    @required this.subjectCode,
   }) : super(key: key);
 
   @override
@@ -202,7 +206,10 @@ class CameraState extends State<CameraScreen> {
             var faceMatched = await _predictUser(uid);
             Navigator.pop(context);
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return AttendanceScreen(result: faceMatched);
+              return AttendanceScreen(
+                  result: faceMatched,
+                  rollNumber: widget.rollNumber,
+                  subjectCode: widget.subjectCode);
             }));
           } catch (e) {
             print(e);

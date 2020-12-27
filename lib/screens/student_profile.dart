@@ -21,6 +21,7 @@ class HomeScreenState extends State<HomeScreen> {
 
   dynamic data;
   String uid;
+  String rollNumber;
   List subjects;
   @override
   void initState() {
@@ -36,6 +37,7 @@ class HomeScreenState extends State<HomeScreen> {
       setState(() {
         result = qrResult;
         subjects = data['subjects'];
+        rollNumber = data['rollNumber'];
       });
       await secondPageRoute();
     } on PlatformException catch (ex) {
@@ -64,6 +66,7 @@ class HomeScreenState extends State<HomeScreen> {
       return ClassDetailsScreen(
         result: result,
         subjects: subjects,
+        rollNumber: rollNumber,
       );
     }));
   }

@@ -14,14 +14,16 @@ class ClassDetailsScreen extends StatefulWidget {
     Key key,
     @required this.result,
     @required this.subjects,
+    @required this.rollNumber,
   }) : super(key: key);
 
   final String result;
   final List subjects;
+  final String rollNumber;
 
   @override
   ClassState createState() {
-    return new ClassState(result, subjects);
+    return new ClassState(result, subjects, rollNumber);
   }
 }
 
@@ -36,6 +38,7 @@ class ClassState extends State<ClassDetailsScreen> {
   String subject;
   String subjectCode;
   List subjects;
+  String rollNumber;
   String time;
   DateTime systemTime, barcodeTime, displayDate;
 
@@ -43,7 +46,7 @@ class ClassState extends State<ClassDetailsScreen> {
   MLVisionService _mlVisionService = MLVisionService();
   CameraDescription cameraDescription;
   bool loading = false;
-  ClassState(this.result, this.subjects);
+  ClassState(this.result, this.subjects, this.rollNumber);
 
   @override
   void initState() {
@@ -178,7 +181,11 @@ class ClassState extends State<ClassDetailsScreen> {
               label: Text("Take Your Picture"),
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return CameraScreen(cameraDescription: cameraDescription);
+                  return CameraScreen(
+                    cameraDescription: cameraDescription,
+                    rollNumber: rollNumber,
+                    subjectCode: subjectCode,
+                  );
                 }));
               },
             ),
