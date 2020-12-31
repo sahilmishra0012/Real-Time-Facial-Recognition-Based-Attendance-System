@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:facial_recognition_attendance/utils/auth_service.dart';
 import 'package:facial_recognition_attendance/screens/class_details_screen.dart';
+import 'package:facial_recognition_attendance/screens/auth/login_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
@@ -85,271 +86,290 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     setState(() {
-      uid = (context.watch<User>().uid).toString();
+      try {
+        uid = (context.watch<User>().uid).toString();
+      } catch (e) {
+        uid = 'nOpgth1fj0PWJK39L2BlegeKL8o1';
+      }
     });
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Image.asset(
-              'assets/logo/logo_a.png',
-              fit: BoxFit.contain,
-              height: MediaQuery.of(context).size.width / 7,
-            ),
-          ],
-        ),
-        actions: <Widget>[
-          FlatButton(
-            textColor: Colors.white,
-            onPressed: () {
-              context.read<AuthenticationService>().signOut();
-            },
-            child: Text(
-              "Sign Out",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+    try {
+      return Scaffold(
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset(
+                'assets/logo/header.png',
+                fit: BoxFit.contain,
+                height: MediaQuery.of(context).size.width / 7,
               ),
-            ),
-            shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+            ],
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding:
-                  EdgeInsets.only(top: MediaQuery.of(context).size.height / 20),
-            ),
-            Container(
+          actions: <Widget>[
+            FlatButton(
+              textColor: Colors.white,
+              onPressed: () {
+                context.read<AuthenticationService>().signOut();
+                Navigator.pop(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AuthScreen()));
+              },
               child: Text(
-                "STUDENT PROFILE",
-                style: new TextStyle(
-                  fontSize: 30.0,
-                  color: Colors.black,
+                "Sign Out",
+                style: TextStyle(
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
             ),
-            Padding(
-              padding:
-                  EdgeInsets.only(top: MediaQuery.of(context).size.height / 30),
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: FutureBuilder(
-                future: users.doc((context.watch<User>().uid).toString()).get(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done)
-                    return FutureBuilder(
-                      future: _getImage(context, snapshot.data.data()['photo']),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done)
-                          return Container(
-                            margin: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width / 4.5,
-                              right: MediaQuery.of(context).size.width / 4.5,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black),
-                            ),
-                            child: snapshot.data,
-                          );
-                        else if (snapshot.hasError)
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 20),
+              ),
+              Container(
+                child: Text(
+                  "STUDENT PROFILE",
+                  style: new TextStyle(
+                    fontSize: 30.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 30),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: FutureBuilder(
+                  future:
+                      users.doc((context.watch<User>().uid).toString()).get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done)
+                      return FutureBuilder(
+                        future:
+                            _getImage(context, snapshot.data.data()['photo']),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.done)
+                            return Container(
+                              margin: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width / 4.5,
+                                right: MediaQuery.of(context).size.width / 4.5,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black),
+                              ),
+                              child: snapshot.data,
+                            );
+                          else if (snapshot.hasError)
+                            return Container();
+                          else if (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                            return SpinKitFadingCircle(
+                              color: Colors.blue,
+                              size: 50.0,
+                            );
                           return Container();
-                        else if (snapshot.connectionState ==
-                            ConnectionState.waiting)
-                          return SpinKitWave(
-                            color: Colors.blue,
-                            size: 50.0,
-                          );
-                        return Container();
-                      },
-                    );
-                  return Container();
-                },
+                        },
+                      );
+                    return Container();
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.only(top: MediaQuery.of(context).size.height / 30),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width / 15,
-                  right: MediaQuery.of(context).size.width / 15),
-              child: FutureBuilder(
-                future: users.doc((context.watch<User>().uid).toString()).get(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done)
-                    return Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        child: Text(
-                          "Name: " + snapshot.data.data()['displayName'],
-                          style: new TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 30),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width / 15,
+                    right: MediaQuery.of(context).size.width / 15),
+                child: FutureBuilder(
+                  future:
+                      users.doc((context.watch<User>().uid).toString()).get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done)
+                      return Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          child: Text(
+                            "Name: " + snapshot.data.data()['displayName'],
+                            style: new TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  return Container();
-                },
+                      );
+                    return Container();
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.only(top: MediaQuery.of(context).size.height / 50),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width / 15,
-                  right: MediaQuery.of(context).size.width / 15),
-              child: FutureBuilder(
-                future: users.doc((context.watch<User>().uid).toString()).get(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done)
-                    return Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        child: Text(
-                          "Roll Number: " + snapshot.data.data()['rollNumber'],
-                          style: new TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 50),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width / 15,
+                    right: MediaQuery.of(context).size.width / 15),
+                child: FutureBuilder(
+                  future:
+                      users.doc((context.watch<User>().uid).toString()).get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done)
+                      return Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          child: Text(
+                            "Roll Number: " +
+                                snapshot.data.data()['rollNumber'],
+                            style: new TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  return Container();
-                },
+                      );
+                    return Container();
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.only(top: MediaQuery.of(context).size.height / 50),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width / 15,
-                  right: MediaQuery.of(context).size.width / 15),
-              child: FutureBuilder(
-                future: users.doc((context.watch<User>().uid).toString()).get(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done)
-                    return Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        child: Text(
-                          "Degree: " + snapshot.data.data()['degree'],
-                          style: new TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 50),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width / 15,
+                    right: MediaQuery.of(context).size.width / 15),
+                child: FutureBuilder(
+                  future:
+                      users.doc((context.watch<User>().uid).toString()).get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done)
+                      return Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          child: Text(
+                            "Degree: " + snapshot.data.data()['degree'],
+                            style: new TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  return Container();
-                },
+                      );
+                    return Container();
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.only(top: MediaQuery.of(context).size.height / 50),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width / 15,
-                  right: MediaQuery.of(context).size.width / 15),
-              child: FutureBuilder(
-                future: users.doc((context.watch<User>().uid).toString()).get(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done)
-                    return Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        child: Text(
-                          "Branch: " + snapshot.data.data()['branch'],
-                          style: new TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 50),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width / 15,
+                    right: MediaQuery.of(context).size.width / 15),
+                child: FutureBuilder(
+                  future:
+                      users.doc((context.watch<User>().uid).toString()).get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done)
+                      return Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          child: Text(
+                            "Branch: " + snapshot.data.data()['branch'],
+                            style: new TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  return Container();
-                },
+                      );
+                    return Container();
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.only(top: MediaQuery.of(context).size.height / 50),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width / 15,
-                  right: MediaQuery.of(context).size.width / 15),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  child: Text(
-                    "Email ID: " + (context.watch<User>().email).toString(),
-                    style: new TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 50),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width / 15,
+                    right: MediaQuery.of(context).size.width / 15),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    child: Text(
+                      "Email ID: " + (context.watch<User>().email).toString(),
+                      style: new TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.only(top: MediaQuery.of(context).size.height / 50),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width / 15,
-                  right: MediaQuery.of(context).size.width / 15),
-              child: FutureBuilder(
-                future: users.doc((context.watch<User>().uid).toString()).get(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done)
-                    return Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        child: Text(
-                          "Contact Number: " +
-                              snapshot.data.data()['contactNumber'],
-                          style: new TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 50),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width / 15,
+                    right: MediaQuery.of(context).size.width / 15),
+                child: FutureBuilder(
+                  future:
+                      users.doc((context.watch<User>().uid).toString()).get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done)
+                      return Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          child: Text(
+                            "Contact Number: " +
+                                snapshot.data.data()['contactNumber'],
+                            style: new TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  return Container();
-                },
+                      );
+                    return Container();
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.blue,
-        icon: Icon(Icons.qr_code_scanner),
-        label: Text("Scan"),
-        onPressed: _scanQR,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
+        floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Colors.blue,
+          icon: Icon(Icons.qr_code_scanner),
+          label: Text("Scan"),
+          onPressed: _scanQR,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      );
+    } catch (e) {
+      return Container();
+    }
   }
 }

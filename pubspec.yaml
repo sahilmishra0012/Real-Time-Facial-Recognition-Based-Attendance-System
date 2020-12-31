@@ -75,6 +75,7 @@ flutter:
   assets:
     - assets/logo/logo.png
     - assets/logo/logo_a.png
+    - assets/logo/header.png
     - assets/mobilefacenet.tflite
     - assets/not-found.png
     - assets/timeout.png

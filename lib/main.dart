@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:facial_recognition_attendance/config/palette.dart';
-import 'package:facial_recognition_attendance/screens/auth/login_screen.dart';
+import 'package:facial_recognition_attendance/screens/login_splash_screen.dart';
+import 'package:facial_recognition_attendance/screens/home_splash_screen.dart';
 import 'package:facial_recognition_attendance/screens/student_profile.dart';
 import 'package:facial_recognition_attendance/utils/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -58,9 +59,9 @@ class AuthenticationWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
     if (firebaseUser == null) {
-      return AuthScreen();
+      return AuthSplashScreen();
     } else {
-      return HomeScreen();
+      return HomeSplashScreen();
     }
   }
 }

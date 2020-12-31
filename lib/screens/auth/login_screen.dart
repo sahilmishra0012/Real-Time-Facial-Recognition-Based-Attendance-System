@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:facial_recognition_attendance/utils/auth_service.dart';
+import 'package:facial_recognition_attendance/screens/student_profile.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
@@ -285,6 +286,13 @@ class _AuthScreenState extends State<AuthScreen>
                                                           Color(0xff092E34),
                                                     ),
                                                   );
+                                                } else {
+                                                  Navigator.pop(context);
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              HomeScreen()));
                                                 }
                                               },
                                             );

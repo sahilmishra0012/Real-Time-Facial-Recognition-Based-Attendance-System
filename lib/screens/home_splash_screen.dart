@@ -2,25 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:facial_recognition_attendance/screens/auth/login_screen.dart';
 import 'package:facial_recognition_attendance/screens/student_profile.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({
-    Key key,
-    @required this.loginState,
-  }) : super(key: key);
-
-  final User loginState;
+class HomeSplashScreen extends StatefulWidget {
   @override
-  _SplashScreenState createState() => _SplashScreenState(loginState);
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
+class _SplashScreenState extends State<HomeSplashScreen>
     with TickerProviderStateMixin {
-  User loginState;
-  _SplashScreenState(this.loginState);
   AnimationController _circularController;
   @override
   void initState() {
@@ -32,18 +22,14 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   startTime() async {
-    var duration = new Duration(seconds: 3);
+    var duration = new Duration(seconds: 4);
     return new Timer(duration, route);
   }
 
   route() {
-    if (loginState == null) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => AuthScreen()));
-    } else {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
-    }
+    Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => HomeScreen()));
   }
 
   @override
@@ -64,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Image.asset(
-                    'assets/logo/logo.png',
+                    'assets/logo/logo_a.png',
                     width: 2 * width / 2.0,
                     height: 2 * width / 2.0,
                   ),
@@ -88,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen>
           Expanded(
             flex: 1,
             child: Container(
-              child: SpinKitWave(
+              child: SpinKitFadingCircle(
                 color: Color(0xff469CA7),
                 controller: AnimationController(
                     vsync: this, duration: const Duration(milliseconds: 1200)),
